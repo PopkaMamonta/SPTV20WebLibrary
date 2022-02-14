@@ -24,7 +24,7 @@ import session.BookFacade;
  *
  * @author user
  */
-@WebServlet(name = "MyServlet", urlPatterns = {
+@WebServlet(name = "MyServlet",loadOnStartup = 1, urlPatterns = {
     "/addAuthor",
     "/createAuthor",
     "/addBook",
@@ -50,6 +50,7 @@ public class MyServlet extends HttpServlet {
         String path = request.getServletPath();
         switch (path) {
             case "/addAuthor":
+                request.setAttribute("activeAddAuthor", true);
                 request.getRequestDispatcher("/WEB-INF/addAuthor.jsp").forward(request, response);
                 break;
             case "/createAuthor":
@@ -84,6 +85,7 @@ public class MyServlet extends HttpServlet {
                 request.getRequestDispatcher("/addAuthor").forward(request, response);
                 break;
             case "/addBook":
+                request.setAttribute("activeAddBook", true);
                 List<Author> authors = authorFacade.findAll();
                 request.setAttribute("authors", authors);
                 request.getRequestDispatcher("/WEB-INF/addBook.jsp").forward(request, response);

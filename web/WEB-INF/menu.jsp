@@ -19,7 +19,16 @@
           <li class="nav-item">
             <a class='nav-link <c:if test="${activeAddBook eq true}">active</c:if>'  aria-current="page" href="addBook">Добавить книгу</a>
           </li>
-         
+          <c:if test="${authUser eq null}">
+            <li class="nav-item">
+              <a class='nav-link <c:if test="${activeShowLogin eq true}">active</c:if>'  aria-current="page" href="showLogin">Вход</a>
+            </li>
+          </c:if>
+          <c:if test="${authUser ne null}">
+            <li class="nav-item">
+              <a class='nav-link <c:if test="${activeLogout eq true}">active</c:if>'  aria-current="page" href="logout">Выход</a>
+            </li>
+          </c:if>
         </ul>
         <form class="d-flex">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

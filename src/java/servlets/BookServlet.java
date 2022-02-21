@@ -8,7 +8,6 @@ package servlets;
 import entity.Author;
 import entity.Book;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -25,13 +24,11 @@ import session.BookFacade;
  * @author user
  */
 @WebServlet(name = "MyServlet",loadOnStartup = 1, urlPatterns = {
-    "/addAuthor",
-    "/createAuthor",
     "/addBook",
     "/createBook",
     "/listBooks",
 })
-public class MyServlet extends HttpServlet {
+public class BookServlet extends HttpServlet {
     @EJB private AuthorFacade authorFacade;
     @EJB private BookFacade bookFacade;
     /**
@@ -49,41 +46,6 @@ public class MyServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String path = request.getServletPath();
         switch (path) {
-            case "/addAuthor":
-                request.setAttribute("activeAddAuthor", true);
-                request.getRequestDispatcher("/WEB-INF/addAuthor.jsp").forward(request, response);
-                break;
-            case "/createAuthor":
-                String firstName = request.getParameter("firstName");
-                String lastName = request.getParameter("lastName");
-                String birthYear = request.getParameter("birthYear");
-                if("".equals(firstName)
-                        || lastName.isEmpty()
-                        || birthYear.isEmpty()){
-                    request.setAttribute("firtName", firstName);
-                    request.setAttribute("lastName", lastName);
-                    request.setAttribute("birthYear", birthYear);
-                    request.setAttribute("info", "Заполните все поля");
-                    request.getRequestDispatcher("/addAuthor").forward(request, response);
-                    break;
-                }
-                Author author = new Author();
-                author.setFirstName(firstName);
-                author.setLastName(lastName);
-                try {
-                    author.setBirthYear(Integer.parseInt(birthYear));
-                } catch (Exception e) {
-                    request.setAttribute("firtName", firstName);
-                    request.setAttribute("lastName", lastName);
-                    request.setAttribute("birthYear", birthYear);
-                    request.setAttribute("info", "Год рождения заполните цифрами");
-                    request.getRequestDispatcher("/addAuthor").forward(request, response);
-                    break;
-                }
-                
-                authorFacade.create(author);
-                request.getRequestDispatcher("/addAuthor").forward(request, response);
-                break;
             case "/addBook":
                 request.setAttribute("activeAddBook", true);
                 List<Author> authors = authorFacade.findAll();

@@ -28,5 +28,9 @@ public class RoleFacade extends AbstractFacade<Role> {
     public RoleFacade() {
         super(Role.class);
     }
+
+    Role findByRoleName(String roleName) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

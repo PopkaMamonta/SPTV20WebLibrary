@@ -5,7 +5,11 @@
  */
 package session;
 
+import entity.Role;
+import entity.User;
 import entity.UserRoles;
+import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,7 +20,8 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class UserRolesFacade extends AbstractFacade<UserRoles> {
-
+    @EJB private RoleFacade roleFacade;
+            
     @PersistenceContext(unitName = "SPTV20WebLibraryPU")
     private EntityManager em;
 
@@ -27,6 +32,17 @@ public class UserRolesFacade extends AbstractFacade<UserRoles> {
 
     public UserRolesFacade() {
         super(UserRoles.class);
+    }
+
+    public boolean isRole(String roleName, User authUser) {
+        List<String> listRoleNames = em.createQuery("SELECT ur.role.roleName FROM UserRoles ur WHERE ur.user = :authUser")
+                .setParameter("authUser", authUser)
+                .getResultList();
+        if(listRoleNames.contains(roleName)){
+            return true;
+        }else{
+            return false;
+        }
     }
     
 }

@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<h1 class="w-100 text-center my-5">Добавить автора</h1>
+<h1 class="w-100 text-center my-5">Авторизация</h1>
 <div class="w-100 d-flex justify-content-center">
     <div class="card border-0  p-5 m-4" style="width: 30rem;">
         <form action="login" method="POST">

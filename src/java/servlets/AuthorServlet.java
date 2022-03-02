@@ -6,6 +6,7 @@
 package servlets;
 
 import entity.Author;
+import entity.User;
 import java.io.IOException;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -13,7 +14,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import session.AuthorFacade;
+import session.UserRolesFacade;
 
 /**
  *
@@ -24,7 +27,9 @@ import session.AuthorFacade;
     "/createAuthor",
 })
 public class AuthorServlet extends HttpServlet {
-@EJB private AuthorFacade authorFacade;
+    @EJB private AuthorFacade authorFacade;
+    @EJB private UserRolesFacade userRolesFacade;
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,6 +43,20 @@ public class AuthorServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession(false);
+        if(session == null){
+            request.setAttribute("info", "Авторизуйтесь!");
+            request.getRequestDispatcher("/showLogin").forward(request, response);
+        }
+        User authUser = (User) session.getAttribute("authUser");
+        if(authUser == null){
+            request.setAttribute("info", "Авторизуйтесь!");
+            request.getRequestDispatcher("/showLogin").forward(request, response);
+        }
+        if(!userRolesFacade.isRole("MANAGER",authUser)){
+            request.setAttribute("info", "У вас нет прав!");
+            request.getRequestDispatcher("/showLogin").forward(request, response);
+        }
         String path = request.getServletPath();
         switch (path) {
             case "/addAuthor":

@@ -27,6 +27,8 @@ import session.UserRolesFacade;
  * @author jvm
  */
 @WebServlet(name = "LoginServlet",loadOnStartup = 1, urlPatterns = {
+    "/registration",
+    "/showRegistration",
     "/showLogin",
     "/login",
     "/logout",
@@ -94,6 +96,9 @@ public class LoginServlet extends HttpServlet {
                 request.setAttribute("activeShowLogin", true);
                 request.getRequestDispatcher("/showLogin.jsp").forward(request, response);
                 break;
+            case "/showRegistration":
+                request.setAttribute("activeShowRegistration",true);
+                request.getRequestDispatcher("/showRegistration.jsp").forward(request,response);
             case "/login":
                 
                 String login = request.getParameter("login");
@@ -114,6 +119,35 @@ public class LoginServlet extends HttpServlet {
                 request.setAttribute("info", "Здравствуйте "+authUser.getReader().getFirstname());
                 request.getRequestDispatcher("/listBooks").forward(request, response);
                 break;
+            case "/registration":
+                String pass=(request.getParameter("password"));
+                String pass2=(request.getParameter("password2"));
+                if (pass==(pass2)){
+                    Reader reader = new Reader();
+                    String name=request.getParameter("name");
+                    reader.setFirstname(name);
+                    String lastname=request.getParameter("lastname");
+                    reader.setLastname(lastname);
+                    String tel=request.getParameter("tel");
+                    reader.setPhone(tel);
+                    readerFacade.create(reader);
+                    User user = new User();
+                    String Login=request.getParameter("login");
+                    user.setLogin(Login);
+                    String Password=request.getParameter("password");
+                    user.setPassword(Password);
+                    user.setReader(reader);
+                    userFacade.create(user);
+                    Role role = new Role();
+                    role.setRoleName("READER");
+                    UserRoles userRoles = new UserRoles();
+                    userRoles.setRole(role);
+                    userRoles.setUser(user);
+                    userRolesFacade.create(userRoles);
+                    
+                }
+                request.getRequestDispatcher("/showRegistration").forward(request, response);
+            break;
             case "/logout":
                 session = request.getSession(false);
                 if(session != null){

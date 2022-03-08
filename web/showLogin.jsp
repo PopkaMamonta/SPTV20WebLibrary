@@ -18,6 +18,7 @@
                 <input type="text" class="form-control"  name="password" id="password" placeholder="">
             </div>
             <input class="btn btn-primary my-3" type="submit" value="Войти">
+            <p><a href="showRegistration">Регистрация</a></p>
         </form>
     </div>
 </div>

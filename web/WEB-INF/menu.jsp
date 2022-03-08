@@ -5,7 +5,7 @@
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-light bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="listBooks">SPTV20WebLibrary</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,9 +19,17 @@
           <li class="nav-item">
             <a class='nav-link <c:if test="${activeAddBook eq true}">active</c:if>'  aria-current="page" href="addBook">Добавить книгу</a>
           </li>
+          <li class="nav-item">
+            <a class='nav-link <c:if test="${activeShowTakeOnBook eq true}">active</c:if>'  aria-current="page" href="showTakeOnBook">Выдать книгу</a>
+          </li>
           <c:if test="${authUser eq null}">
             <li class="nav-item">
               <a class='nav-link <c:if test="${activeShowLogin eq true}">active</c:if>'  aria-current="page" href="showLogin">Вход</a>
+            </li>
+          </c:if>
+          <c:if test="${authUser eq null}">
+            <li class="nav-item">
+              <a class='nav-link <c:if test="${activeShowRegistration eq true}">active</c:if>'  aria-current="page" href="showRegistration">Регистрация</a>
             </li>
           </c:if>
           <c:if test="${authUser ne null}">
